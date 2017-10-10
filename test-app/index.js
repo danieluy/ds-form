@@ -1,8 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import DsForm from '../src/DsForm'
+import App from './App'
 
 ReactDOM.render(
-  <DsForm />,
+  <App />,
   document.getElementById('root')
 )

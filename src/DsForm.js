@@ -1,15 +1,60 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
+import DsInputText from './DsInputText'
 
-import TextField from 'material-ui/TextField'
+class DsForm extends React.PureComponent {
 
-class DsForm extends Component {
+
+
+
+
+
+
+
+  /////////////////////////////////////////////////////////////////
+  // WRONG, inputs must be on state, try using lifecycle methods //
+  /////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  constructor() {
+    super()
+    this.inputs = []
+  }
+  registerInput(input) {
+    this.inputs.push(input)
+  }
+  addProps(children, index) {
+    const input = {
+      value: null,
+      valid: false
+    }
+    this.registerInput(input)
+    return React.cloneElement(children, {
+      key: `ds-input-${index}`,
+      input
+    })
+  }
   render() {
+    let children = null
+    if (Array.prototype.isPrototypeOf(this.props.children))
+      children = this.props.children.map((children, i) => this.addProps(children, i))
+    else
+      children = this.addProps(this.props.children)
     return (
       <div>
-        {/* {this.props.children} */}
-        Form Component
+        {children}
       </div>
     )
   }
@@ -18,6 +63,10 @@ class DsForm extends Component {
 export default DsForm
 
 DsForm.defaultProps = {}
+
+export {
+  DsInputText
+}
 
 // export class DsInput extends Component {
 //   constructor() {
