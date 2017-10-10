@@ -21,6 +21,7 @@ module.exports = env => {
           loader: "babel-loader",
           include: [
             path.join(__dirname, "/src/"),
+            path.join(__dirname, "/test-app/"),
           ],
           test: /\.jsx?$/,
           query: {
@@ -54,7 +55,7 @@ module.exports = env => {
     })
   }
   if (env.production) {
-    consfig.entry = {
+    config.entry = {
       DsForm: path.join(__dirname, '/src/DsForm.js')
     }
     config.output = {
