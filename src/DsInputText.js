@@ -25,8 +25,11 @@ class DsInputText extends React.PureComponent {
       this.setState({
         value,
         error: null
-      })
+      }, this.returnValues.bind(this))
     }
+  }
+  returnValues(){
+    console.log('returnValues()')
     if (this.state.error) {
       this.props.input.valid = false
     }
@@ -34,6 +37,7 @@ class DsInputText extends React.PureComponent {
       this.props.input.value = this.state.value
       this.props.input.valid = true
     }
+    console.log(this.props.input.value)
   }
   render() {
     return (

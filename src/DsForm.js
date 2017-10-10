@@ -4,67 +4,57 @@ import moment from 'moment'
 import DsInputText from './DsInputText'
 
 class DsForm extends React.PureComponent {
-
-
-
-
-
-
-
-
-  /////////////////////////////////////////////////////////////////
-  // WRONG, inputs must be on state, try using lifecycle methods //
-  /////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-
-
-
-
-
-
-  
   constructor() {
     super()
-    this.inputs = []
+    this.state = {
+      inputFields: null,
+      inputs: null
+    }
   }
-  registerInput(input) {
-    this.inputs.push(input)
+  componentDidMount() {
+    let inputFields = null
+    let inputs = null
+    if (Array.prototype.isPrototypeOf(this.props.children)) {
+      const childrenWithProps = this.props.children.map((children, i) => this.addProps(children, i))
+      inputFields = childrenWithProps
+      inputs = childrenWithProps.map(input => input.props.input)
+    }
+    else {
+      inputFields = this.addProps(this.props.children)
+      inputs = [childrenWithProps.props.input]
+    }
+    this.setState({ inputFields, inputs })
+    ////////////////////////////////////////////////////////////////////////////////////////
+    // review this way of handling Array vs single child, variables type shouldn't change //
+    ////////////////////////////////////////////////////////////////////////////////////////
   }
   addProps(children, index) {
     const input = {
       value: null,
       valid: false
     }
-    this.registerInput(input)
     return React.cloneElement(children, {
-      key: `ds-input-${index}`,
+      key: `ds-input-${index || 0}`,
       input
     })
   }
   render() {
-    let children = null
-    if (Array.prototype.isPrototypeOf(this.props.children))
-      children = this.props.children.map((children, i) => this.addProps(children, i))
-    else
-      children = this.addProps(this.props.children)
+    console.log(this.state)
     return (
       <div>
-        {children}
+        {this.state.inputFields}
+        <pre>
+          {JSON.stringify(this.state.inputs, null, 2)}
+        </pre>
       </div>
     )
   }
 }
 
-export default DsForm
-
 DsForm.defaultProps = {}
 
 export {
+  DsForm,
   DsInputText
 }
 

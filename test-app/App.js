@@ -1,5 +1,5 @@
 import React from 'react'
-import DsForm, { DsInputText } from '../src/DsForm'
+import { DsForm, DsInputText } from '../src/DsForm'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 class App extends React.Component {
