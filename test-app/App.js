@@ -12,11 +12,14 @@ class App extends React.Component {
               floatingLabelText="Floating label text"
               onChange={(data) => { console.log(data) }}
               hintText="Hint Text"
+              name="name1"
+              required="Required test message"
             />
             <DsInputText
               floatingLabelText="Floating label text"
               onChange={(data) => { console.log(data) }}
               hintText="Hint Text"
+              name="name2"
             />
           </DsForm>
         </div>

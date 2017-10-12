@@ -8,43 +8,40 @@ class DsForm extends React.PureComponent {
     super()
     this.state = {
       inputFields: null,
-      inputs: null
+      values: {}
     }
   }
   componentDidMount() {
     let inputFields = null
-    let inputs = null
     if (Array.prototype.isPrototypeOf(this.props.children)) {
       const childrenWithProps = this.props.children.map((children, i) => this.addProps(children, i))
       inputFields = childrenWithProps
-      inputs = childrenWithProps.map(input => input.props.input)
     }
     else {
       inputFields = this.addProps(this.props.children)
-      inputs = [childrenWithProps.props.input]
     }
-    this.setState({ inputFields, inputs })
+    this.setState({ inputFields })
     ////////////////////////////////////////////////////////////////////////////////////////
     // review this way of handling Array vs single child, variables type shouldn't change //
     ////////////////////////////////////////////////////////////////////////////////////////
   }
   addProps(children, index) {
-    const input = {
-      value: null,
-      valid: false
-    }
     return React.cloneElement(children, {
       key: `ds-input-${index || 0}`,
-      input
+      onInput: this.handleInput.bind(this)
     })
   }
+  handleInput(input) {
+    const values = Object.assign({}, this.state.values)
+    values[input.key] = { value: input.value, valid: input.valid }
+    this.setState({ values })
+  }
   render() {
-    console.log(this.state)
     return (
       <div>
         {this.state.inputFields}
         <pre>
-          {JSON.stringify(this.state.inputs, null, 2)}
+          {JSON.stringify(this.state.values, null, 2)}
         </pre>
       </div>
     )

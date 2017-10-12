@@ -6,8 +6,8 @@ import TextField from 'material-ui/TextField'
 class DsInputText extends React.PureComponent {
   constructor(props) {
     super(props)
-    if (!props.input)
-      throw new Error('It seems that you are using DsInputText without DsForm. This component is intended for use as DsForm children')
+    // if (!props.input)
+    //   throw new Error('It seems that you are using DsInputText without DsForm. This component is intended for use as DsForm children')
     this.state = {
       value: null,
       error: null,
@@ -18,26 +18,23 @@ class DsInputText extends React.PureComponent {
     const value = e.target.value
     if (this.props.required && (!value || value === '')) {
       this.setState({
-        error: this.porps.required.error
+        error: this.porps.required.error,
+        isValid: false
       })
     }
     else {
       this.setState({
         value,
-        error: null
-      }, this.returnValues.bind(this))
+        error: null,
+        isValid: true
+      }, () => {
+        this.props.onInput({
+          name: this.props.name,
+          value: this.state.value,
+          valid: this.state.isValid
+        })
+      })
     }
-  }
-  returnValues(){
-    console.log('returnValues()')
-    if (this.state.error) {
-      this.props.input.valid = false
-    }
-    else {
-      this.props.input.value = this.state.value
-      this.props.input.valid = true
-    }
-    console.log(this.props.input.value)
   }
   render() {
     return (
