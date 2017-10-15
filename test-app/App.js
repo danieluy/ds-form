@@ -1,5 +1,5 @@
 import React from 'react'
-import { DsForm, DsInputText } from '../src/DsForm'
+import { DsForm, DsChecks, DsInputText } from '../src/DsForm'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 class App extends React.Component {
@@ -13,7 +13,11 @@ class App extends React.Component {
               onChange={(data) => { console.log(data) }}
               hintText="Hint Text"
               name="name1"
-              required="Required test message"
+              checkUpfront={true}
+              checks={[
+                DsChecks.required,
+                DsChecks.positiveNumber
+              ]}
             />
             <DsInputText
               floatingLabelText="Floating label text"

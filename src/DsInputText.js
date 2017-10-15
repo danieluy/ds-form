@@ -11,30 +11,73 @@ class DsInputText extends React.PureComponent {
     this.state = {
       value: null,
       error: null,
-      isValid: false
+      valid: false
     }
   }
   handleInput(e) {
-    const value = e.target.value
-    if (this.props.required && (!value || value === '')) {
+    this.setState({
+      value: e.target.value === '' ? null : e.target.value,
+      error: null,
+      valid: true
+    }, () => {
+      if (this.props.checkUpfront)
+        this.runChecks()
+      else
+        this.returnInput()
+    })
+    // const value = e.target.value
+    // const error = null
+    // const valid = false
+    // if (this.props.checkUpfront) {
+    //   if (this.props.required && (!value || value === '')) {
+    //     this.setState({
+    //       error: this.porps.required.error,
+    //       valid: false
+    //     })
+    //   }
+    // }
+    // this.setState(
+    //   { value, error, valid },
+    //   () => {
+    //     this.props.onInput({
+    //       name: this.props.name,
+    //       value: this.state.value,
+    //       valid: this.state.valid
+    //     })
+    //   }
+    // )
+  }
+  runChecks() {
+    if (this.props.checks) {
+      // const check = this.props.checks.reduce((status, check) => {
+      //   const checkResult = check(this.state.value)
+      //   status.valid = checkResult.valid
+      //   status.message = checkResult.message
+      //   return status
+      // }, { valid: true, message: null })
+      const check = { valid: true, message: null }
+      this.props.checks.forEach(check => {
+        const checkResult = check(this.state.value)
+        if (!checkResult.hasOwnProperty('valid') || !checkResult.hasOwnProperty('message'))
+          throw new Error('Check function must return: { valid: boolean, message: string }')
+        if (!checkResult.valid)
+          check = checkResult
+      });
+      console.log('check', check)
       this.setState({
-        error: this.porps.required.error,
-        isValid: false
-      })
+        error: check.message,
+        valid: check.valid
+      }, this.returnInput)
     }
-    else {
-      this.setState({
-        value,
-        error: null,
-        isValid: true
-      }, () => {
-        this.props.onInput({
-          name: this.props.name,
-          value: this.state.value,
-          valid: this.state.isValid
-        })
-      })
-    }
+    else
+      this.returnInput()
+  }
+  returnInput() {
+    this.props.onInput({
+      name: this.props.name,
+      value: this.state.value,
+      valid: this.state.valid
+    })
   }
   render() {
     return (
@@ -55,10 +98,9 @@ class DsInputText extends React.PureComponent {
 DsInputText.propTypes = {
   floatingLabelText: PropTypes.string.isRequired,
   hintText: PropTypes.string,
-  required: PropTypes.shape({
-    error: PropTypes.string
-  }),
-  fullWidth: PropTypes.bool
+  fullWidth: PropTypes.bool,
+  checkUpfront: PropTypes.bool,
+  checks: PropTypes.arrayOf(PropTypes.func)
 }
 
 export default DsInputText
