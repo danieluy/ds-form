@@ -12,18 +12,17 @@ class App extends React.Component {
               floatingLabelText="Floating label text"
               onChange={(data) => { console.log(data) }}
               hintText="Hint Text"
-              name="name1"
-              checkUpfront={true}
+              name="field1"
+              checkOnInput={true}
               checks={[
                 DsChecks.required,
-                DsChecks.positiveNumber
+                DsChecks.number.negative
               ]}
             />
             <DsInputText
               floatingLabelText="Floating label text"
               onChange={(data) => { console.log(data) }}
-              hintText="Hint Text"
-              name="name2"
+              name="field2"
             />
           </DsForm>
         </div>
