@@ -15,14 +15,15 @@ class App extends React.Component {
               name="field1"
               checkOnInput={true}
               checks={[
-                DsChecks.required,
-                DsChecks.number.negative
+                DsChecks.required(),
+                DsChecks.text.accepts()
               ]}
             />
             <DsInputText
               floatingLabelText="Floating label text"
               onChange={(data) => { console.log(data) }}
               name="field2"
+              fullWidth={true}
             />
           </DsForm>
         </div>
